@@ -1,8 +1,11 @@
 // Include express from node_modules and define server related variables
 const express = require('express')
-const app = express()
+
 const port = 3000
 const mongoose = require('mongoose') // 載入 mongoose
+
+const exphbs = require('express-handlebars')
+const app = express()
 
 mongoose.connect('mongodb://localhost/todo-list') // 設定連線到 mongoDB
 
@@ -16,9 +19,13 @@ db.on('open', () => {
   console.log('mongodb connected!')
 })
 
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+
+app.set('view engine', 'hbs')
+
 // setting the route and corresponding response
 app.get('/', (req, res) => {
-  res.send(`This is my Web App`)
+  res.render('index')
 })
 
 // Listen the server when it started
